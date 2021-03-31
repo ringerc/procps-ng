@@ -1535,8 +1535,34 @@ T}
 
 rss	RSS	T{
 resident set size, the non\-swapped physical memory that a task has used (in
-kiloBytes).  (alias
+kiloBytes). Equal to rss_anon + rss_file + rss_share. (alias
 .BR rssize , \ rsz ).
+T}
+
+rss_anon	RSSANON	T{
+resident anonymous memory size. The non\-swapped physical memory that a task is
+using for private, un-shared memory ranges (in kiloBytes). This is where
+process stack, globals, and malloc()'d heap allocations will be shown. Note
+that copy-on-write shared pages from fork()ed child processes are charged to
+both the parent and child process so the sum of RSSANON for a set of fork()ed
+children may be greater than the total memory actually consumed by them.  See
+"RssAnon" in proc(5) for details.
+T}
+
+rss_file	RSSFILE	T{
+resident file-backed memory size. The non\-swapped physical memory that a task
+is using for file-backed memory mappings (in kiloBytes). Includes executable
+and library pages that are currently resident. mmap()ed files show up here
+unless they are shareable mappings. See "RssFile" in proc(5) for details.
+T}
+
+rss_share	RSSSHARE	T{
+resident shared memory size. The non\-swapped physical memory that a task is
+using for shareable memory ranges (in kiloBytes). Note that this memory may
+not actually be shared with other processes, it is just in shareable memory
+mappings like POSIX shmem, SYSV shmem, or shareable mmap()ed files. See
+"RssShare" in proc(5) for details. (alias
+.BR share)
 T}
 
 rssize	RSS	T{
@@ -1607,12 +1633,9 @@ saved group name.  This will be the textual group ID, if it can be obtained
 and the field width permits, or a decimal representation otherwise.
 T}
 
-share	RSS	T{
-resident shared memory size. The non\-swapped physical memory that a task is
-using (in kiloBytes).  Note that this memory may not actually be shared with
-other processes, it is just in shareable memory mappings like POSIX shmem, SYSV
-shmem, or shareable mmap()ed files. Copy-on-write memory from fork() without
-exec() is not shown here. See "RssShmem" in proc(5) for details.
+share	SHRD	T{
+see
+.BR rss_shared .
 T}
 
 sid	SID	T{

@@ -1024,6 +1024,16 @@ setREL1(VM_RSS_SHARED)
     return snprintf(outbuf, COLWID, "%ld", rSv(VM_RSS_SHARED, ul_int, pp));
 }
 
+static int pr_rss_anon(char *restrict const outbuf, const proc_t *restrict const pp){
+setREL1(VM_RSS_ANON)
+    return snprintf(outbuf, COLWID, "%ld", rSv(VM_RSS_ANON, ul_int, pp));
+}
+
+static int pr_rss_file(char *restrict const outbuf, const proc_t *restrict const pp){
+setREL1(VM_RSS_FILE)
+    return snprintf(outbuf, COLWID, "%ld", rSv(VM_RSS_FILE, ul_int, pp));
+}
+
 /* pp->vm_rss * 1000 would overflow on 32-bit systems with 64 GB memory */
 static int pr_pmem(char *restrict const outbuf, const proc_t *restrict const pp){
   unsigned long pmem;
@@ -1687,6 +1697,9 @@ static const format_struct format_array[] = { /*
 {"rgroup",    "RGROUP",  pr_rgroup,        PIDS_ID_RGROUP,           8,    U98,  ET|USER},  /* was 8 wide */
 {"rlink",     "RLINK",   pr_nop,           PIDS_noop,                8,    BSD,  AN|RIGHT},
 {"rss",       "RSS",     pr_rss,           PIDS_VM_RSS,              5,    XXX,  PO|RIGHT}, /* was 5 wide */
+{"rss_anon",  "RSSANON", pr_rss_anon,      PIDS_VM_RSS_ANON,         8,    XXX,  PO|RIGHT},
+{"rss_file",  "RSSFILE", pr_rss_file,      PIDS_VM_RSS_FILE,         8,    XXX,  PO|RIGHT},
+{"rss_share", "RSSSHARE",pr_rss_share,     PIDS_VM_RSS_SHARED,       8,    XXX,  PO|RIGHT}, /* share */
 {"rssize",    "RSS",     pr_rss,           PIDS_VM_RSS,              5,    DEC,  PO|RIGHT}, /*rsz*/
 {"rsz",       "RSZ",     pr_rss,           PIDS_VM_RSS,              5,    BSD,  PO|RIGHT}, /*rssize*/
 {"rtprio",    "RTPRIO",  pr_rtprio,        PIDS_PRIORITY_RT,         6,    BSD,  TO|RIGHT},
@@ -1703,7 +1716,7 @@ static const format_struct format_array[] = { /*
 {"sgi_rss",   "RSS",     pr_rss,           PIDS_VM_RSS,              4,    LNX,  PO|LEFT},  /* SZ:RSS */
 {"sgid",      "SGID",    pr_sgid,          PIDS_ID_SGID,             5,    LNX,  ET|RIGHT},
 {"sgroup",    "SGROUP",  pr_sgroup,        PIDS_ID_SGROUP,           8,    LNX,  ET|USER},
-{"share",     "SHRD",    pr_rss_share,     PIDS_VM_RSS_SHARED,       5,    LNx,  PO|RIGHT},
+{"share",     "SHRD",    pr_rss_share,     PIDS_VM_RSS_SHARED,       5,    LNx,  PO|RIGHT}, /* rss_share */
 {"sid",       "SID",     pr_sess,          PIDS_ID_SESSION,          5,    XXX,  PO|PIDMAX|RIGHT}, /* Sun & HP */
 {"sig",       "PENDING", pr_sig,           PIDS_SIGNALS,             9,    XXX,  ET|SIGNAL}, /*pending -- Dragonfly uses this for whole-proc and "tsig" for thread */
 {"sig_block", "BLOCKED",  pr_sigmask,      PIDS_SIGBLOCKED,          9,    LNX,  TO|SIGNAL},
