@@ -789,6 +789,29 @@ page tables, kernel stack, struct thread_info, and struct task_struct.  This
 is usually at least 20 KiB of memory that is always resident.  SIZE is the
 virtual size of the process (code+\:data+\:stack).
 .PP
+The RSS field includes resident (non-swapped) shared memory that is charged
+against each process that touches (reads or writes) a page in a shared memory
+mapping. This shared memory is shown separately by the RSSSHARE field. This
+shared memory field displays how much shared memory a process has actually
+accessed, not the sum of the size of the shared memory segments the process is
+attached to, so different processes using the same shared segments often show
+different shared memory sizes. Memory will be shown in RSSSHARE whether or not
+any other processes are actually attached to and sharing the memory. ps does
+not expose any way to see the total physical memory consumed by a process's
+share of any shared memory it uses, but this information can be obtained from
+/proc/$pid/smaps_rollup per proc(5).
+.PP
+The RSS and RSSANON fields include any resident (non-swapped) copy-on-write
+pages. Copy-on-write (CoW) pages are created when a process fork()s without a
+subsequent exec(), which is uncommon, so this will not affect most systems.
+Every process's RSS and RSSANON is displayed as if it was the only one using
+the copy-on-write pages, so the true total memory use will be less than the sum
+of the RSSANON fields if CoW memory is involved. These CoW pages are not
+considered shared memory or listed in RSSHARE. See the
+/proc/$pid/smaps_rollup file and
+.IR proc (5)
+for details and finer grained breakdowns of process memory use.
+.PP
 Processes marked <defunct> are dead processes (so\-called "zombies") that
 remain because their parent has not destroyed them properly.  These processes
 will be destroyed by
@@ -797,7 +820,7 @@ if the parent process exits.
 .PP
 If the length of the username is greater than the length of the display
 column, the username will be truncated.  See the \fB\-o\fR and \fB\-O\fR
-formatting options to customize length.
+formatting options to customize length, e.g. -o user:20,...
 .PP
 Commands options such as
 .B ps \-aux
@@ -808,6 +831,11 @@ running) plus all processes owned by a user named \fIx\fR.  If that user
 doesn't exist, then
 .B ps
 will assume you really meant \fBps aux\fR.
+.PP
+Linux control groups
+.IR cgroups (7)
+can help track and account for the resource use of groups of processes better
+than is generally possible with the ps command.
 .SH "PROCESS FLAGS"
 The sum of these values is displayed in the "F" column,
 which is provided by the
@@ -1898,7 +1926,8 @@ mappings are currently excluded; this is subject to change.  (alias
 T}
 
 wchan	WCHAN	T{
-name of the kernel function in which the process is sleeping.
+name of the kernel function in which the process is sleeping. May not be
+available on hardened kernels.
 T}
 
 .TE
@@ -1997,11 +2026,28 @@ unix98	standard
 .TE
 .PP
 .PP
+.SH "FILES"
+.BR /proc/$pid/stat
+.BR /proc/$pid/statm
+.BR /proc/$pid/status
+.BR /proc/$pid/smaps_rollup
+.BR /proc/$pid/exec
+.BR /proc/$pid/cgroup
+.BR /proc/$pid/loginuid
+.BR /proc/$pid/ns/
+.BR /proc/$pid/oom_score_adj
+.BR /proc/$pid/wchan
+.PP
 .SH "SEE ALSO"
 .BR pgrep (1),
 .BR pstree (1),
 .BR top (1),
-.BR proc (5).
+.BR proc (5),
+.BR free (1),
+.BR vmstat (1),
+.BR sar (1),
+.BR systemd-cgls (1),
+.BR cgroups (7)
 .PP
 .PP
 .SH STANDARDS
