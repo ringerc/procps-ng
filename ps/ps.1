@@ -927,7 +927,7 @@ P	ppid	parent process ID
 r	rss	resident set size
 R	resident	resident pages
 s	size	memory size in kilobytes
-S	share	amount of shared pages
+S	share	amount of shared memory in kilobytes
 t	tty	the device number of the controlling tty
 T	start_time	time process was started
 U	uid	user ID number
@@ -1605,6 +1605,14 @@ T}
 sgroup	SGROUP	T{
 saved group name.  This will be the textual group ID, if it can be obtained
 and the field width permits, or a decimal representation otherwise.
+T}
+
+share	RSS	T{
+resident shared memory size. The non\-swapped physical memory that a task is
+using (in kiloBytes).  Note that this memory may not actually be shared with
+other processes, it is just in shareable memory mappings like POSIX shmem, SYSV
+shmem, or shareable mmap()ed files. Copy-on-write memory from fork() without
+exec() is not shown here. See "RssShmem" in proc(5) for details.
 T}
 
 sid	SID	T{

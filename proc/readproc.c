@@ -635,6 +635,7 @@ LEAVE(0x160);
 
 /////////////////////////////////////////////////////////////////////////
 
+/* /proc/$pid/statm (Linux) - see man 5 proc . Size in pages. */
 static void statm2proc(const char* s, proc_t *restrict P) {
     sscanf(s, "%lu %lu %lu %lu %lu %lu %lu",
            &P->size, &P->resident, &P->share,

@@ -1019,6 +1019,11 @@ setREL1(VM_RSS)
   return snprintf(outbuf, COLWID, "%lu", rSv(VM_RSS, ul_int, pp));
 }
 
+static int pr_rss_share(char *restrict const outbuf, const proc_t *restrict const pp){
+setREL1(VM_RSS_SHARED)
+    return snprintf(outbuf, COLWID, "%ld", rSv(VM_RSS_SHARED, ul_int, pp));
+}
+
 /* pp->vm_rss * 1000 would overflow on 32-bit systems with 64 GB memory */
 static int pr_pmem(char *restrict const outbuf, const proc_t *restrict const pp){
   unsigned long pmem;
@@ -1619,7 +1624,7 @@ static const format_struct format_array[] = { /*
 {"m_dt",      "DT",      pr_nop,           PIDS_noop,                4,    LNx,  PO|RIGHT},
 {"m_lrs",     "LRS",     pr_nop,           PIDS_noop,                5,    LNx,  PO|RIGHT},
 {"m_resident", "RES",    pr_nop,           PIDS_MEM_RES_PGS,         5,    LNx,  PO|RIGHT},
-{"m_share",   "SHRD",    pr_nop,           PIDS_MEM_SHR_PGS,         5,    LNx,  PO|RIGHT},
+{"m_share",   "-",       pr_nop,           PIDS_noop,                5,    LNx,  PO|RIGHT},
 {"m_size",    "SIZE",    pr_size,          PIDS_VSIZE_PGS,           5,    LNX,  PO|RIGHT},
 {"m_swap",    "SWAP",    pr_nop,           PIDS_noop,                5,    LNx,  PO|RIGHT},
 {"m_trs",     "TRS",     pr_trs,           PIDS_VSIZE_PGS,           5,    LNx,  PO|RIGHT},
@@ -1698,7 +1703,7 @@ static const format_struct format_array[] = { /*
 {"sgi_rss",   "RSS",     pr_rss,           PIDS_VM_RSS,              4,    LNX,  PO|LEFT},  /* SZ:RSS */
 {"sgid",      "SGID",    pr_sgid,          PIDS_ID_SGID,             5,    LNX,  ET|RIGHT},
 {"sgroup",    "SGROUP",  pr_sgroup,        PIDS_ID_SGROUP,           8,    LNX,  ET|USER},
-{"share",     "-",       pr_nop,           PIDS_noop,                1,    LNX,  PO|RIGHT},
+{"share",     "SHRD",    pr_rss_share,     PIDS_VM_RSS_SHARED,       5,    LNx,  PO|RIGHT},
 {"sid",       "SID",     pr_sess,          PIDS_ID_SESSION,          5,    XXX,  PO|PIDMAX|RIGHT}, /* Sun & HP */
 {"sig",       "PENDING", pr_sig,           PIDS_SIGNALS,             9,    XXX,  ET|SIGNAL}, /*pending -- Dragonfly uses this for whole-proc and "tsig" for thread */
 {"sig_block", "BLOCKED",  pr_sigmask,      PIDS_SIGBLOCKED,          9,    LNX,  TO|SIGNAL},

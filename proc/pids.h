@@ -94,7 +94,7 @@ enum pids_item {
     PIDS_MEM_DATA_PGS,      //   ul_int        statm: drs
     PIDS_MEM_RES,           //   ul_int        derived from MEM_RES_PGS, as KiB
     PIDS_MEM_RES_PGS,       //   ul_int        statm: resident
-    PIDS_MEM_SHR,           //   ul_int        derived from MEM_SHR_PGS, as KiB
+    PIDS_MEM_SHR,           //   ul_int        derived from MEM_SHR_PGS, as KiB (eq VM_RSS_SHARED)
     PIDS_MEM_SHR_PGS,       //   ul_int        statm: shared
     PIDS_MEM_VIRT,          //   ul_int        derived from MEM_VIRT_PGS, as KiB
     PIDS_MEM_VIRT_PGS,      //   ul_int        statm: size
@@ -153,7 +153,7 @@ enum pids_item {
     PIDS_VM_RSS_ANON,       //   ul_int        status: RssAnon
     PIDS_VM_RSS_FILE,       //   ul_int        status: RssFile
     PIDS_VM_RSS_LOCKED,     //   ul_int        status: VmLck
-    PIDS_VM_RSS_SHARED,     //   ul_int        status: RssShmem
+    PIDS_VM_RSS_SHARED,     //   ul_int        status: RssShmem (eq. MEM_SHR)
     PIDS_VM_SIZE,           //   ul_int        status: VmSize
     PIDS_VM_STACK,          //   ul_int        status: VmStk
     PIDS_VM_SWAP,           //   ul_int        status: VmSwap
