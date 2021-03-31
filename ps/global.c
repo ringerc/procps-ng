@@ -54,6 +54,10 @@ int Pids_index;                       // actual number of active enums
 
 // most of these could be defined as static in the output.c module
 // (but for future flexibility, the easiest route has been chosen)
+//
+// Changes here generally need to be reflected the makEXT invocations in in
+// ps/common.h
+//
 makREL(ADDR_CODE_END)
 makREL(ADDR_CODE_START)
 makREL(ADDR_CURR_EIP)

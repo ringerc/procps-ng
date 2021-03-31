@@ -68,6 +68,10 @@ extern int               Pids_index;
 
 // most of these need not be extern, they're unique to output.c
 // (but for future flexibility the easiest path has been taken)
+//
+// Changes here generally need to be accompanied by makREL
+// expansions in ps/global.c
+//
 makEXT(ADDR_CODE_END)
 makEXT(ADDR_CODE_START)
 makEXT(ADDR_CURR_EIP)

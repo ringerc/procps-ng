@@ -27,6 +27,15 @@
 extern "C" {
 #endif
 
+/*
+ * Label individual data about a process so it can be accessed via
+ * a common interface.
+ *
+ * Entries here have interfaces generated for them using makEXT
+ * (usually in ps/common.h) and implementations using makREL
+ * (usually in ps/global.c). Access is by setREL1 and rSv macros
+ * and variants from ps/common.h
+ */
 enum pids_item {
     PIDS_noop,              //        ( never altered )
     PIDS_extra,             //        ( reset to zero )
