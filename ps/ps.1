@@ -1791,6 +1791,14 @@ see
 .BR suid ).
 T}
 
+swap	SWAP	T{
+Amount of memory owned by the process that is currently paged to disk (swapped out).
+Memory may appear in both RSS and SWAP if the page was swapped out, then read back
+from swap but not dirtied. See VmSwap in proc(5). This field may be unmaintained
+on some kernels unless swap accounting is enabled; see the swapaccount=1 kernel
+parameter.
+T}
+
 sz	SZ	T{
 size in physical pages of the core image of the process.  This includes text,
 data, and stack space.  Device mappings are currently excluded; this is

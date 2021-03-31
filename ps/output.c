@@ -1034,6 +1034,11 @@ setREL1(VM_RSS_FILE)
     return snprintf(outbuf, COLWID, "%ld", rSv(VM_RSS_FILE, ul_int, pp));
 }
 
+static int pr_swap(char *restrict const outbuf, const proc_t *restrict const pp){
+setREL1(VM_SWAP)
+    return snprintf(outbuf, COLWID, "%ld", rSv(VM_SWAP, ul_int, pp));
+}
+
 /* pp->vm_rss * 1000 would overflow on 32-bit systems with 64 GB memory */
 static int pr_pmem(char *restrict const outbuf, const proc_t *restrict const pp){
   unsigned long pmem;
@@ -1747,6 +1752,7 @@ static const format_struct format_array[] = { /*
 {"svgroup",   "SVGROUP", pr_sgroup,        PIDS_ID_SGROUP,           8,    LNX,  ET|USER},
 {"svuid",     "SVUID",   pr_suid,          PIDS_ID_SUID,             5,    XXX,  ET|RIGHT},
 {"svuser",    "SVUSER",  pr_suser,         PIDS_ID_SUSER,            8,    LNX,  ET|USER},
+{"swap",      "SWAP",    pr_swap,          PIDS_VM_SWAP,             5,    XXX,  PO|RIGHT},
 {"systime",   "SYSTEM",  pr_nop,           PIDS_noop,                6,    DEC,  ET|RIGHT},
 {"sz",        "SZ",      pr_sz,            PIDS_VM_SIZE,             5,    HPU,  PO|RIGHT},
 {"taskid",    "TASKID",  pr_nop,           PIDS_noop,                5,    SUN,  TO|PIDMAX|RIGHT}, // is this a thread ID?
